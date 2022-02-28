@@ -3,12 +3,11 @@
 This is a POC designed to execute a sequence of cypher statements using a set of different operating parameters.
 
 ## Options
-
-| key  | value  | default  | description
-|---|---|---|---|
-| mode  |  READ, WRITE, AUTOCOMMIT | WRITE | description  |  
-| id | -=string=-  | none | description  |    
-| type  | query, delete, iterate  | query |description  |   
+| key  | value                   | default | description |
+|------|-------------------------|---------|-------------|
+| mode | READ, WRITE, AUTOCOMMIT | WRITE   | description |  
+| id   | -=string=-              | none    | description |    
+| type | query, delete, iterate  | query   | description |   
 
 ## Example databaseconfig.json file
 ```
@@ -40,7 +39,6 @@ This is a POC designed to execute a sequence of cypher statements using a set of
 ```
 
 ## Example Sequence Definitions
-
 How to configure a statement to read a CSV file, and pass each batch to the script.
 ```
 {
@@ -77,7 +75,6 @@ This example shows how to configure a statement to run in AUTOCOMMIT mode, infin
 ```
 
 ## Usage example
-
 ```
 java -cp ./target/neo4j-cypher-runner-4.4.2.jar org.bciano.neo4j.cypherrunner.DatasetLoaderApplication databaseconfig.json sequence.json
 ```
