@@ -1,0 +1,16 @@
+{
+  "clientConfig": {
+    "driverProperties": {
+      "MaxConnectionLifetime": "1"
+    }
+  },
+  "scriptDefinitions": [
+    {
+      "id": "example",
+      "type": "query",
+      "batchSize": 1000,
+      "script": "MATCH (n) RETURN count(n)",
+      "mode": "READ"
+    }
+  ]
+}
