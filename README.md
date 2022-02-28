@@ -10,6 +10,35 @@ This is a POC designed to execute a sequence of cypher statements using a set of
 | id | -=string=-  | none | description  |    
 | type  | query, delete, iterate  | query |description  |   
 
+## Example databaseconfig.json file
+```
+{
+  "boltUri": "bolt://localhost:7687",
+  "username":"neo4j",
+  "password":"neo4j"
+}
+```
+
+## Example sequence.json file
+```
+{
+  "clientConfig": {
+    "driverProperties": {
+      "MaxConnectionLifetime": "1"
+    }
+  },
+  "scriptDefinitions": [
+    {
+      "id": "example",
+      "type": "query",
+      "batchSize": 1000,
+      "script": "MATCH (n) RETURN count(n)",
+      "mode": "READ"
+    }
+  ]
+}
+```
+
 ## Example Sequence Definitions
 
 How to configure a statement to read a CSV file, and pass each batch to the script.
