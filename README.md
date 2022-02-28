@@ -12,6 +12,28 @@ This is a POC designed to execute a sequence of cypher statements using a set of
 
 ## Example Sequence Definitions
 
+How to configure a statement to read a CSV file, and pass each batch to the script.
+```
+{
+ "id": "APP_FROM_SOR_Delete",
+ "type": "write", 
+ "batchSize": 20000, 
+ "dataFileName": "Users.csv",  
+ "scriptFileName": "add_users.cql"
+}
+```
+
+Alternative to apoc.periodic.iterate
+```
+{
+    "id": "APP_FROM_SOR_Delete", 
+    "type": "iterate", 
+    "batchLog": true, 
+    "iterateScript": "MATCH (m) RETURN id(m) as mid", 
+    "actionScript": "MATCH (m) WHERE id(m) = mid RETURN id(m)"
+}
+```
+
 This example shows how to configure a statement to run in AUTOCOMMIT mode, infinitely, with a 30 second delay after each transaction.
 ```
 {
