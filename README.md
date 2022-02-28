@@ -46,6 +46,19 @@ java -cp ./neo4j-cypher-runner-4.4.2.jar org.bciano.neo4j.cypherrunner.DatasetLo
 }
 ```
 
+## Client Config section
+clientConfig is optional.
+The only supported client config property right now is MaxConnectionLifetime.  This allows the client to specify how long to keep a connection in the connection pool before removing it and replacing it.
+A value of 1 = 1second,  3600 = 1 hour.
+```
+"clientConfig": 
+  {
+    "driverProperties": {
+      "MaxConnectionLifetime": "1"
+    }
+  }
+```
+
 ## Example Sequence Definitions
 How to configure a statement to read a CSV file, and pass each batch to the script.
 ```
