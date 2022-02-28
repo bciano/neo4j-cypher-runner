@@ -1,6 +1,8 @@
 # Neo4j Cypher Script Runner
-
 This is a POC designed to execute a sequence of cypher statements using a set of different operating parameters.
+
+# Pre-requisites
+- project can be built and ran using java 8 or 11
 
 ## Options
 | key  | value                   | default | description |
