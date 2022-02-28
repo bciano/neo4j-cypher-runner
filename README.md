@@ -9,6 +9,12 @@ This is a POC designed to execute a sequence of cypher statements using a set of
 | id   | -=string=-              | none    | description |    
 | type | query, delete, iterate  | query   | description |   
 
+## Usage example
+Assuming jar and configuration json filea are all in the same directory:
+```
+java -cp ./neo4j-cypher-runner-4.4.2.jar org.bciano.neo4j.cypherrunner.DatasetLoaderApplication ./databaseconfig.json ./sequence.json
+```
+
 ## Example databaseconfig.json file
 ```
 {
@@ -74,7 +80,3 @@ This example shows how to configure a statement to run in AUTOCOMMIT mode, infin
 }
 ```
 
-## Usage example
-```
-java -cp ./target/neo4j-cypher-runner-4.4.2.jar org.bciano.neo4j.cypherrunner.DatasetLoaderApplication databaseconfig.json sequence.json
-```
