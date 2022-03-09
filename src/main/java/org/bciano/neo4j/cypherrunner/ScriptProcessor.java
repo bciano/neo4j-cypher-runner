@@ -41,7 +41,8 @@ public class ScriptProcessor {
         String mode = def.getOrDefault("mode", "READ").toString();
 
         if (!"".equals(scriptFileName)) {
-            script = neo4j.getStatementFromFile(CypherScriptRunner.TEMPLATES + scriptFileName);
+            //script = neo4j.getStatementFromFile(CypherScriptRunner.TEMPLATES + scriptFileName);
+            script = neo4j.getStatementFromFile(scriptFileName);
         }
 
         if (!"".equals(dataFileName) && cypherScriptRunner.getSequenceConfig().containsKey("datadirectorypath")) {

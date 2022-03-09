@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.codec.binary.Hex;
+
 
 public class Neo4jUtil {
 
@@ -121,13 +123,48 @@ public class Neo4jUtil {
         return new ArrayList<>();
     }
 
+    private boolean isContainBOM(String path) {
+
+        boolean result = false;
+
+        byte[] bom = new byte[3];
+        try(InputStream is = new FileInputStream(path)){
+
+            // read first 3 bytes of a file.
+            is.read(bom);
+
+            // BOM encoded as ef bb bf
+            String content = new String(Hex.encodeHex(bom));
+            if ("efbbbf".equalsIgnoreCase(content)) {
+                result = true;
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+
+
     public void executeStatementWithDataFromFile(String dataFilePath, String stmt, int batchSize, String batchLog)  {
 
         //build a new driver
         createDriver();
         Session session = driver.session(getSessionConfig());
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(dataFilePath), "UTF-8")) ) {
+        if(isContainBOM(dataFilePath)){
+            log("Found BOM!");
+            System.out.println("Found BOM!");
+        }else{
+            log("No BOM.");
+            System.out.println("No BOM.");
+        }
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new UnicodeBOMInputStream(new FileInputStream(dataFilePath)).skipBOM(), "UTF-8")) ) {
 
             CsvSchema csvSchema = CsvSchema.emptySchema().withHeader();
 
@@ -161,7 +198,11 @@ public class Neo4jUtil {
                 Map<String, Object> params = new HashMap();
                 params.put("data", rows);
                 LocalDateTime batchStartTime = LocalDateTime.now();
-                execute(session, stmt, params);
+                List<Record> results = execute(session, stmt, params);
+
+                results.forEach(r->{
+                    System.out.println( r.asMap().toString() );
+                });
 
                 if(!"".equals(batchLog) && "true".equalsIgnoreCase(batchLog) ){
                     LocalDateTime now = LocalDateTime.now();
@@ -175,6 +216,7 @@ public class Neo4jUtil {
 
                 rows = new ArrayList<>();
             }
+            System.out.println("");
             log("");
             log("Batches: " + batchNo);
         } catch (Exception e) {
@@ -222,7 +264,8 @@ public class Neo4jUtil {
 
         InputStream is = null;
         try {
-            is = this.getClass().getClassLoader().getResourceAsStream(statementFilePath);
+            is = new FileInputStream(statementFilePath);
+            //is = this.getClass().getClassLoader().getResourceAsStream(statementFilePath);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
@@ -247,6 +290,7 @@ public class Neo4jUtil {
 
     private static String removeUTF8BOM(String s) {
         if (s.contains(UTF8_BOM)) {
+            System.out.println("*** REMOVING UTF8BOM FROM STATEMENT ***");
             s = s.replaceAll(UTF8_BOM, "");
         }
         return s;
