@@ -28,11 +28,11 @@ public class DatasetLoaderApplication {
         String sequenceConfigFilePath = args[1];
 
         log("Start Time: " + new Timestamp(System.currentTimeMillis()));
-        log("dbConfigFilePath      : " + dbConfigFilePath);
+        //log("dbConfigFilePath      : " + dbConfigFilePath);
         log("sequenceConfigFilePath: " + sequenceConfigFilePath);
 
         try {
-            databaseConfig = new ObjectMapper().readValue(new File(dbConfigFilePath), Map.class);
+            //databaseConfig = new ObjectMapper().readValue(new File(dbConfigFilePath), Map.class);
             if (sequenceConfigFilePath == null){
                 sequenceConfig = new ConfigHelper().getConfig(DEFAULT_SEQUENCE_FILE);
             }else{
@@ -42,21 +42,12 @@ public class DatasetLoaderApplication {
             e.printStackTrace();
         }
 
-        if(databaseConfig.containsKey("databaseName")){
-            log("databaseName: " + databaseConfig.get("databaseName").toString());
-        }
-
-        Map clientConfig = new HashMap();
-        if(sequenceConfig.containsKey("clientConfig")){
-            clientConfig = (Map)sequenceConfig.get("clientConfig");
-        }
-
         String dataDirectoryPath = (args.length==3?args[2]:null);
         if(dataDirectoryPath != null){
             sequenceConfig.put("datadirectorypath", dataDirectoryPath);
         }
 
-        CypherScriptRunner loader = new CypherScriptRunner(databaseConfig, sequenceConfig, clientConfig);
+        CypherScriptRunner loader = new CypherScriptRunner(sequenceConfig);
         loader.process();
 
         log("End Time: " + new Timestamp(System.currentTimeMillis()));

@@ -4,7 +4,13 @@ This is a POC designed to execute a sequence of cypher statements using a set of
 # Pre-requisites
 - project can be built and ran using java 8 or 11
 
-## Options
+## Client Config Options
+| key                   | value                  | default | description |
+|-----------------------|------------------------|---------|-------------|
+| MaxConnectionLifetime | -=int=-                | 60      | description |  
+| uniqueScriptDriver    | -=boolean=-            | true    | description |    
+
+## Script Config Options
 | key  | value                   | default | description |
 |------|-------------------------|---------|-------------|
 | mode | READ, WRITE, AUTOCOMMIT | WRITE   | description |  

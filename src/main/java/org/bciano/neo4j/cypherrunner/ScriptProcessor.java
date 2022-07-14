@@ -69,11 +69,11 @@ public class ScriptProcessor {
                     }
 
                     String scriptOutput = ("".equals(iterateScriptFileName) ? iterateScript : iterateScriptFileName);
-                    log("[" + (i + 1) + "/" + scriptDef.size() + " - " + (x + 1) + "] : START    : executeScript : " + id + " : " + type + " : " + dataFileName + " : " + batchSize + " : " + scriptOutput);
+                    log("[" + (i + 1) + "/" + scriptDef.size() + " - " + (x + 1) + "] : START    : executeScript : " + id + " : " + type + " : " + mode + " : " + " : " + dataFileName + " : " + batchSize + " : " + scriptOutput);
                     executeIterateScript(neo4j, iterateScript, actionScript, "WRITE");
                 } else {
                     String scriptOutput = ("".equals(scriptFileName) ? script : scriptFileName);
-                    log("[" + (i + 1) + "/" + scriptDef.size() + " - " + (x + 1) + "] : START    : executeScript : " + id + " : " + type + " : " + dataFileName + " : " + batchSize + " : " + scriptOutput);
+                    log("[" + (i + 1) + "/" + scriptDef.size() + " - " + (x + 1) + "] : START    : executeScript : " + id + " : " + type + " : " + mode + " : " + dataFileName + " : " + batchSize + " : " + scriptOutput);
                     executeScript(neo4j, dataFileName, script, batchSize, batchLog, mode);
                 }
 

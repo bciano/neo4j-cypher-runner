@@ -1,5 +1,6 @@
 {
   "boltUri": "bolt://localhost:7687",
   "username":"neo4j",
-  "password":"neo4jneo4j"
+  "password":"neo4jneo4j",
+  "databaseName": "neo4j"
 }
