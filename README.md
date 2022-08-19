@@ -18,23 +18,20 @@ This is a POC designed to execute a sequence of cypher statements using a set of
 | type | query, delete, iterate  | query   | description |   
 
 ## Usage example
-Assuming jar and configuration json filea are all in the same directory:
+Assuming jar and configuration json files are all in the same directory:
 ```
-java -cp ./neo4j-cypher-runner-4.4.2.jar org.bciano.neo4j.cypherrunner.DatasetLoaderApplication ./databaseconfig.json ./sequence.json
-```
-
-## Example databaseconfig.json file
-```
-{
-  "boltUri": "bolt://localhost:7687",
-  "username":"neo4j",
-  "password":"neo4j"
-}
+java -cp ./neo4j-cypher-runner-4.4.9.1.jar org.bciano.neo4j.cypherrunner.DatasetLoaderApplication ./sequence.json
 ```
 
 ## Example sequence.json file
 ```
 {
+  "databaseConfig" : {
+    "boltUri": "bolt://localhost:7687",
+    "username":"neo4j",
+    "password":"neo4jneo4j",
+    "databaseName": "neo4j"
+  },
   "clientConfig": {
     "driverProperties": {
       "MaxConnectionLifetime": "1"
@@ -101,3 +98,10 @@ This example shows how to configure a statement to run in AUTOCOMMIT mode, infin
 }
 ```
 
+## Default Data Directory Path location configuration
+dataDirectoryPath can also be specified as a second parameter.
+
+example:
+```
+java -cp ./neo4j-cypher-runner-4.4.2.jar org.bciano.neo4j.cypherrunner.DatasetLoaderApplication ./sequence.json /tmp/data
+```

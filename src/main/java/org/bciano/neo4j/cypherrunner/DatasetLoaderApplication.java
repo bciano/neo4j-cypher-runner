@@ -23,16 +23,13 @@ public class DatasetLoaderApplication {
     public static void main(String[] args){
 
         LocalDateTime startTime = LocalDateTime.now();
-
-        String dbConfigFilePath = args[0];
-        String sequenceConfigFilePath = args[1];
+        String sequenceConfigFilePath = args[0];
 
         log("Start Time: " + new Timestamp(System.currentTimeMillis()));
-        //log("dbConfigFilePath      : " + dbConfigFilePath);
+
         log("sequenceConfigFilePath: " + sequenceConfigFilePath);
 
         try {
-            //databaseConfig = new ObjectMapper().readValue(new File(dbConfigFilePath), Map.class);
             if (sequenceConfigFilePath == null){
                 sequenceConfig = new ConfigHelper().getConfig(DEFAULT_SEQUENCE_FILE);
             }else{
@@ -42,7 +39,8 @@ public class DatasetLoaderApplication {
             e.printStackTrace();
         }
 
-        String dataDirectoryPath = (args.length==3?args[2]:null);
+        //optional CLI parameter
+        String dataDirectoryPath = (args.length==2?args[1]:null);
         if(dataDirectoryPath != null){
             sequenceConfig.put("datadirectorypath", dataDirectoryPath);
         }
