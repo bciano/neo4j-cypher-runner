@@ -150,7 +150,7 @@ public class Neo4jUtil {
 
 
 
-    public void executeStatementWithDataFromFile(String dataFilePath, String stmt, int batchSize, String batchLog)  {
+    public void executeStatementWithDataFromFile(String dataFilePath, char delimiter, boolean withoutQuoteChar, String stmt, int batchSize, String batchLog)  {
 
         //build a new driver
         createDriver();
@@ -167,6 +167,14 @@ public class Neo4jUtil {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new UnicodeBOMInputStream(new FileInputStream(dataFilePath)).skipBOM(), "UTF-8")) ) {
 
             CsvSchema csvSchema = CsvSchema.emptySchema().withHeader();
+
+            System.out.println("Delimiter: " + delimiter);
+            csvSchema = csvSchema.withColumnSeparator(delimiter);
+
+            System.out.println("withoutQuoteChar: " + withoutQuoteChar);
+            if(withoutQuoteChar){
+                csvSchema = csvSchema.withoutQuoteChar();
+            }
 
             MappingIterator<Map<String, String>> currIter =
                     new CsvMapper().readerWithSchemaFor(Map.class).with(csvSchema).readValues(br);

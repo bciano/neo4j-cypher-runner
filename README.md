@@ -105,3 +105,27 @@ example:
 ```
 java -cp ./neo4j-cypher-runner-4.4.2.jar org.bciano.neo4j.cypherrunner.DatasetLoaderApplication ./sequence.json /tmp/data
 ```
+
+## NEW IDEAS
+
+### doc2json (text extractor)
+This component would iterate through each of the docs in the docFOlder, use Tika to extract the text, and write a json version to the docs-extracted folder
+```
+{ 
+    "id" : "",
+    "type": "doc2json",
+    "docFolder": "./data/docs",
+    "resultFolder" : "./data/docs-extracted"
+}
+```
+
+### ner-extract (entity extractor)
+This component would take a text string and send to NEW  which would return a list of entities that would be stored in a new json along with the original text
+```
+{ 
+    "id" : "",
+    "type": "ner-extract",
+    "docFolder": "./data/docs-extracted",
+    "resultFolder" : "./data/ner-extracted"
+}
+```

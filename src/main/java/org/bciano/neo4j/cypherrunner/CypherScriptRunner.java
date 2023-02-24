@@ -39,32 +39,48 @@ public class CypherScriptRunner {
 
             log("script definition count: " + scriptDef.size());
 
-            Neo4jUtil neo4j = new Neo4jUtil(databaseConfig, clientConfig);
+            Neo4jUtil neo4j = null;
 
             try {
                 for (int i = 0; i < scriptDef.size(); i++) {
                     Map def = scriptDef.get(i);
 
-                    //override driver with new one if there is a script definition specific db config defined
-                    if(def.containsKey("databaseConfig")){
-                        Map dbCfgMap = (Map)def.get("databaseConfig");
-                        if(dbCfgMap.containsKey("databaseName")){
-                            log("databaseName: " + dbCfgMap.get("databaseName").toString());
+                    String type = def.getOrDefault("type","").toString();
+                    if("doc2json".equals(type)){
+                        new DocExtractProcessor().process(scriptDef, def);
+                    }else if("ner-extract".equals(type)){
+                        new NERExtractProcessor().process(scriptDef, def);
+                    }else if("gcp-nlp-extract".equals(type)){
+                        new GCPNLPProcessor().process(scriptDef, def);
+                    }else {
+                        //regular cypher script handling
+                        if (neo4j == null) {
+                            neo4j = new Neo4jUtil(databaseConfig, clientConfig);
                         }
-                        Neo4jUtil scriptDefNeo4j = new Neo4jUtil(dbCfgMap, clientConfig);
 
-                        try {
-                            scriptProcessor.processScript(scriptDef, scriptDefNeo4j, i, def);
-                        }finally {
-                            scriptDefNeo4j.closeSession();
+                        //override driver with new one if there is a script definition specific db config defined
+                        if (def.containsKey("databaseConfig")) {
+                            Map dbCfgMap = (Map) def.get("databaseConfig");
+                            if (dbCfgMap.containsKey("databaseName")) {
+                                log("databaseName: " + dbCfgMap.get("databaseName").toString());
+                            }
+                            Neo4jUtil scriptDefNeo4j = new Neo4jUtil(dbCfgMap, clientConfig);
+
+                            try {
+                                scriptProcessor.processScript(scriptDef, scriptDefNeo4j, i, def);
+                            } finally {
+                                scriptDefNeo4j.closeSession();
+                            }
+                        } else {
+                            //default functionality
+                            scriptProcessor.processScript(scriptDef, neo4j, i, def);
                         }
-                    }else{
-                        //default functionality
-                        scriptProcessor.processScript(scriptDef, neo4j, i, def);
                     }
                 }
             } finally {
-                neo4j.closeSession();
+                if(neo4j != null) {
+                    neo4j.closeSession();
+                }
             }
         } catch (IOException e) {
             LOGGER.error(e.getMessage(), e);

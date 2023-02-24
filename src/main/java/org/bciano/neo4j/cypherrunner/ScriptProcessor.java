@@ -29,6 +29,8 @@ public class ScriptProcessor {
         String id = def.get("id").toString();
         String type = def.get("type").toString();
         String dataFileName = def.getOrDefault("dataFileName", "").toString();
+        char delimiter = def.getOrDefault("delimiter", ",").toString().charAt(0);
+        boolean withoutQuoteChar = Boolean.parseBoolean(def.getOrDefault("withoutQuoteChar", false).toString());
         String scriptFileName = def.getOrDefault("scriptFileName", "").toString();
         String script = def.getOrDefault("script", "").toString();
         String batchLog = def.getOrDefault("batchlog", "").toString();
@@ -74,7 +76,7 @@ public class ScriptProcessor {
                 } else {
                     String scriptOutput = ("".equals(scriptFileName) ? script : scriptFileName);
                     log("[" + (i + 1) + "/" + scriptDef.size() + " - " + (x + 1) + "] : START    : executeScript : " + id + " : " + type + " : " + mode + " : " + dataFileName + " : " + batchSize + " : " + scriptOutput);
-                    executeScript(neo4j, dataFileName, script, batchSize, batchLog, mode);
+                    executeScript(neo4j, dataFileName, delimiter, withoutQuoteChar, script, batchSize, batchLog, mode);
                 }
 
                 log("[" + (i + 1) + "/" + scriptDef.size() + " - " + (x + 1) + "] : COMPLETE : executeScript : " + id + " : " + Duration.between(startTime, LocalDateTime.now()).toString());
@@ -112,7 +114,7 @@ public class ScriptProcessor {
                 } else {
                     String scriptOutput = ("".equals(scriptFileName) ? script : scriptFileName);
                     log("[" + (i + 1) + "/" + scriptDef.size() + "] : START    : executeScript : " + id + " : " + type + " : " + dataFileName + " : " + batchSize + " : " + scriptOutput);
-                    executeScript(neo4j, dataFileName, script, batchSize, batchLog, mode);
+                    executeScript(neo4j, dataFileName, delimiter, withoutQuoteChar, script, batchSize, batchLog, mode);
                 }
 
                 log("[" + (i + 1) + "/" + scriptDef.size() + "] : COMPLETE : executeScript : " + id + " : " + Duration.between(startTime, LocalDateTime.now()).toString());
@@ -164,7 +166,7 @@ public class ScriptProcessor {
 
     }
 
-    void executeScript(Neo4jUtil neo4j, String dataFileName, String script, int batchSize, String batchLog, String mode) {
+    void executeScript(Neo4jUtil neo4j, String dataFileName, char delimiter, boolean withoutQuoteChar, String script, int batchSize, String batchLog, String mode) {
 
         if("".equals(dataFileName)){
             List<Record> results = neo4j.executeStatementOnlyWithResults(script, mode);
@@ -176,7 +178,7 @@ public class ScriptProcessor {
                 }
             });
         }else{
-            neo4j.executeStatementWithDataFromFile(dataFileName, script, batchSize, batchLog);
+            neo4j.executeStatementWithDataFromFile(dataFileName, delimiter, withoutQuoteChar, script, batchSize, batchLog);
         }
 
     }

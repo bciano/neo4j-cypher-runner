@@ -1,0 +1,40 @@
+{
+  "databaseConfig" : {
+    "boltUri": "bolt://localhost:7687",
+    "username":"neo4j",
+    "password":"movies",
+    "databaseName": "neo4j"
+  },
+  "clientConfig":
+  {
+    "driverProperties": {
+      "MaxConnectionLifetime": "1"
+    }
+  },
+  "scriptDefinitions":
+  [
+
+    {
+      "id" : "",
+      "type": "doc2json",
+      "docFolder": "data/docs",
+      "resultFolder" : "data/docs-extracted"
+    },
+
+    {
+      "id" : "",
+      "type": "ner-extract",
+      "docFolder": "./data/docs-extracted",
+      "resultFolder" : "./data/ner-extracted"
+    },
+
+    {
+      "id" : "",
+      "type": "gcp-nlp-extract",
+      "docFolder": "data/docs-extracted",
+      "resultFolder" : "data/gcp-ner-extracted",
+      "gcpkey" : ""
+    }
+
+  ]
+}
