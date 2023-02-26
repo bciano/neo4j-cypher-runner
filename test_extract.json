@@ -20,14 +20,12 @@
       "docFolder": "data/docs",
       "resultFolder" : "data/docs-extracted"
     },
-
     {
       "id" : "",
       "type": "ner-extract",
       "docFolder": "./data/docs-extracted",
       "resultFolder" : "./data/ner-extracted"
     },
-
     {
       "id" : "",
       "type": "gcp-nlp-extract",

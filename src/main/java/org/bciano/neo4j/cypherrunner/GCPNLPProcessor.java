@@ -2,10 +2,19 @@ package org.bciano.neo4j.cypherrunner;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tika.Tika;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.AutoDetectParser;
+import org.apache.tika.parser.ParseContext;
+import org.apache.tika.parser.Parser;
+import org.apache.tika.sax.BodyContentHandler;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.SAXException;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +23,26 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GCPNLPProcessor {
+
+    static class ParsedContent {
+        private Map<String, Object> entities;
+        private String text;
+
+        ParsedContent() {
+
+        }
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public void setEntities(Map<String, Object> entities) {
+            this.entities = entities;
+        }
+    }
 
     public void process(ArrayList<Map> scriptDef, Map def) {
         System.out.println("Doc Extract processing ..");
@@ -39,13 +68,14 @@ public class GCPNLPProcessor {
                 String content = new Tika().parseToString((File)f);
                 map.put("text", content.replaceAll("\n|\r|\t", " "));
                 //System.out.println("TEXT: " + map.get("text"));
+                ObjectMapper objectMapper = new ObjectMapper();
 
                 GCPNLPExtractor nlpe = new GCPNLPExtractor();
-                Map entities = nlpe.extract((String)map.get("text"));
-                map.put("entities", entities);
+                ParsedContent parsedContent = objectMapper.readValue(map.get("text").toString(), ParsedContent.class);
+                map.put("entities", nlpe.extract(parsedContent.getText().trim()));
 
                 String outputFile = resultFolder + "/" + ((File) f).getName() + ".json";
-                ObjectMapper objectMapper = new ObjectMapper();
+
                 objectMapper.writeValue(new File(outputFile), map);
 
             } catch (Exception e) {
