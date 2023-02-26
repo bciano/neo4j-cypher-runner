@@ -180,8 +180,8 @@ This component would take a text string and send to NEW  which would return a li
       "resultFolder" : "data/docs-extracted"
     },
     {
-        id:"",
-        "type": "parallel-jobs
+        "id":"",
+        "type": "parallel-jobs"
         "scriptDefinitions":
             [
                 {
@@ -217,3 +217,5 @@ instead of using a unique name for a job, joba should be defined using their cla
   }
 }
 ````
+
+Definitely need to get the optional dependencies out of the main project jar (its 580mb, currently)
