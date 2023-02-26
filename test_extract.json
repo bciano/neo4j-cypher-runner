@@ -22,6 +22,12 @@
     },
     {
       "id" : "",
+      "type": "ner-extract",
+      "docFolder": "./data/docs-extracted",
+      "resultFolder" : "./data/ner-extracted"
+    },
+    {
+      "id" : "",
       "type": "gcp-nlp-extract",
       "docFolder": "data/docs-extracted",
       "resultFolder" : "data/gcp-ner-extracted",
