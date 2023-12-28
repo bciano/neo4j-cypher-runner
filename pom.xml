@@ -142,6 +142,19 @@
 <!--            <artifactId>google-http-client</artifactId>-->
 <!--            <version>1.42.2</version>-->
 <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neosemantics</artifactId>
+            <version>5.1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.cyclonedx</groupId>
+            <artifactId>cyclonedx-maven-plugin</artifactId>
+            <version>2.7.9</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -162,6 +175,18 @@
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.cyclonedx</groupId>
+                <artifactId>cyclonedx-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>makeAggregateBom</goal>
                         </goals>
                     </execution>
                 </executions>

@@ -218,4 +218,17 @@ instead of using a unique name for a job, joba should be defined using their cla
 }
 ````
 
+## Neo-semantics RDF importer
+This will import the rdf file into neo4j using neo-semantics libraries
+```json
+{
+    "id" : "",
+    "type": "neosemantics-importer",
+    "file": "data/ontology1/salmon.ttl",
+    "config":{
+    //add the neo-semantics function options here
+    }
+}
+```
+
 Definitely need to get the optional dependencies out of the main project jar (its 580mb, currently)

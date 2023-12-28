@@ -1,5 +1,6 @@
 package org.bciano.neo4j.cypherrunner;
 
+import org.bciano.neo4j.cypherrunner.jobs.NeoSemanticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +53,8 @@ public class CypherScriptRunner {
                         new NERExtractProcessor().process(scriptDef, def);
                     }else if("gcp-nlp-extract".equals(type)){
                         new GCPNLPProcessor().process(scriptDef, def);
+                    }else if("neosemantics-importer".equals(type)){
+                        //new NeoSemanticsProcessor().process(scriptDef, def);
                     }else {
                         //regular cypher script handling
                         if (neo4j == null) {

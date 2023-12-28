@@ -1,0 +1,1 @@
+java -cp ./target/neo4j-cypher-runner-4.4.11.jar org.bciano.neo4j.cypherrunner.DatasetLoaderApplication ./test_neosemantics.json

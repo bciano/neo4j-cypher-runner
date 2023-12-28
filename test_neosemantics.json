@@ -1,0 +1,27 @@
+{
+  "databaseConfig" : {
+    "boltUri": "bolt://localhost:7687",
+    "username":"neo4j",
+    "password":"movies",
+    "databaseName": "neo4j"
+  },
+  "clientConfig":
+  {
+    "driverProperties": {
+      "MaxConnectionLifetime": "1"
+    }
+  },
+  "scriptDefinitions":
+  [
+
+    {
+      "id" : "",
+      "type": "neosemantics-importer",
+      "file": "data/ontology1/salmon.ttl",
+      "config":{
+        "singleTx": true
+      }
+    }
+
+  ]
+}
